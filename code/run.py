@@ -3,10 +3,27 @@ import datetime
 from sds011 import SDS011
 import aqi
 from metrics_handler import *
+import pyudev
 
-DEV_PATH = '/dev/ttyUSB0'
 
-def mesure():
+def find_ch340():
+    context = pyudev.Context()
+
+    for device in context.list_devices(subsystem='tty'):
+        parent = device.find_parent('usb', 'usb_device')
+        if parent:
+            props = parent.properties
+            vid = props.get('ID_VENDOR_ID')
+            pid = props.get('ID_MODEL_ID')
+
+            # CH340 = 1a86:7523
+            if vid == '1a86' and pid == '7523':
+                return device.device_node  # e.g. "/dev/ttyUSB0"
+
+    return None
+
+
+def mesure(DEV_PATH):
     sensor = SDS011(DEV_PATH, use_query_mode=True)
     print('Sleep device...')
     sensor.sleep(sleep=True)  # Turn off fan and diode
@@ -44,6 +61,10 @@ aqi {aqi_calculate}
 if __name__ == '__main__':
     if os.geteuid() != 0:
         exit("You need to have root privileges to run this script.\nPlease try again, this time using 'sudo'. Exiting.")
+    DEV_PATH = find_ch340()
+    if DEV_PATH is None:
+        exit("Could not find CH340 device. Is it connected?")
+    print(f"Found CH340 device at {DEV_PATH}")
     server_address = ("0.0.0.0", 8010) 
     httpd = HTTPServer(server_address, MetricsHandler)
     print(f"Serving metrics on http://localhost:8010/metrics")

@@ -1,0 +1,14 @@
+[project]
+name = "code"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "py-sds011",
+    "python-aqi>=0.6.1",
+    "pyudev>=0.24.4",
+]
+
+[tool.uv.sources]
+py-sds011 = { git = "https://github.com/ikalchev/py-sds011" }
