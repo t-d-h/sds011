@@ -1,8 +1,6 @@
 import time, os
 import datetime
 from sds011 import SDS011
-import aqi
-from metrics_handler import *
 import pyudev
 
 
@@ -22,7 +20,6 @@ def find_ch340():
 
     return None
 
-
 def mesure(DEV_PATH):
     sensor = SDS011(DEV_PATH, use_query_mode=True)
     print('Sleep device...')
@@ -37,8 +34,8 @@ def mesure(DEV_PATH):
     sensor.sleep()  # Turn off fan and diode
     return result if result else (0, 0)
 
-def generate_metrics():
-    pm25, pm10 = mesure()
+def generate_metrics(DEV_PATH):
+    pm25, pm10 = mesure(DEV_PATH)
     aqi_calculate = int(aqi.to_aqi([
         (aqi.POLLUTANT_PM25, pm25),
         (aqi.POLLUTANT_PM10, pm10),
@@ -65,7 +62,5 @@ if __name__ == '__main__':
     if DEV_PATH is None:
         exit("Could not find CH340 device. Is it connected?")
     print(f"Found CH340 device at {DEV_PATH}")
-    server_address = ("0.0.0.0", 8010) 
-    httpd = HTTPServer(server_address, MetricsHandler)
-    print(f"Serving metrics on http://localhost:8010/metrics")
-    httpd.serve_forever()
+    print("Starting measurement...")
+    print(generate_metrics(DEV_PATH))
