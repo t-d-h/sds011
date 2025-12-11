@@ -8,12 +8,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "py-sds011" },
+    { name = "python-aqi" },
     { name = "pyudev" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "py-sds011", git = "https://github.com/ikalchev/py-sds011" },
+    { name = "python-aqi", specifier = ">=0.6.1" },
     { name = "pyudev", specifier = ">=0.24.4" },
 ]
 
@@ -33,6 +35,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/1e/7d/ae3f0a63f41e4d2f6
 wheels = [
     { url = "https://files.pythonhosted.org/packages/07/bc/587a445451b253b285629263eb51c2d8e9bcea4fc97826266d186f96f558/pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0", size = 90585, upload-time = "2020-11-23T03:59:13.41Z" },
 ]
+
+[[package]]
+name = "python-aqi"
+version = "0.6.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/89/42266c6fb056ef52776effba731acaf2bf3b564f7845ef970918ee9f68f9/python-aqi-0.6.1.tar.gz", hash = "sha256:141a03a0fed48880dc8706ca57b03f30fa91ab60e9330474bf9c9a8fb9b96020", size = 9024, upload-time = "2019-01-10T04:46:11.584Z" }
 
 [[package]]
 name = "pyudev"

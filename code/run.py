@@ -2,7 +2,7 @@ import time, os
 import datetime
 from sds011 import SDS011
 import pyudev
-
+import aqi
 
 def find_ch340():
     context = pyudev.Context()
